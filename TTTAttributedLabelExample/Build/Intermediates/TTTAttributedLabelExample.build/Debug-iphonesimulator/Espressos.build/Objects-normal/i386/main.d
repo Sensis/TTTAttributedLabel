@@ -1,2 +1,2 @@
 dependencies: \
-  /Users/yellow/github/TSMiniWebBrowser/TTTAttributedLabel/TTTAttributedLabelExample/TTTAttributedLabelExample/main.m
+  /Users/yellow/github/TTTAttributedLabel/TTTAttributedLabelExample/TTTAttributedLabelExample/main.m
