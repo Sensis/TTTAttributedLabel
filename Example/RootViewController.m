@@ -23,9 +23,9 @@
 #import "RootViewController.h"
 
 #import "AttributedTableViewCell.h"
+#import "DetailViewController.h"
 
 @implementation RootViewController
-@synthesize espressos = _espressos;
 
 - (id)init {
     self = [super initWithStyle:UITableViewStylePlain];
@@ -39,7 +39,6 @@
     return self;
 }
 
-
 #pragma mark - UIViewController
 
 - (void)viewDidLoad {
@@ -49,25 +48,32 @@
     [self.navigationController.navigationBar setTintColor:[UIColor darkGrayColor]];
 }
 
-#pragma mark - UITableViewDatasource
+#pragma mark - UITableViewDataSource
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.espressos count];
+- (NSInteger)tableView:(__unused UITableView *)tableView
+ numberOfRowsInSection:(__unused NSInteger)section
+{
+    return (NSInteger)[self.espressos count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [AttributedTableViewCell heightForCellWithText:[self.espressos objectAtIndex:indexPath.row]];
+- (CGFloat)tableView:(UITableView *)tableView
+heightForRowAtIndexPath:(__unused NSIndexPath *)indexPath
+{
+    return [AttributedTableViewCell heightForCellWithText:[self.espressos objectAtIndex:(NSUInteger)indexPath.row]
+                                           availableWidth:CGRectGetWidth(tableView.frame)];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     
     AttributedTableViewCell *cell = (AttributedTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
     if (cell == nil) {
         cell = [[AttributedTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    NSString *description = [self.espressos objectAtIndex:indexPath.row];
+    NSString *description = [self.espressos objectAtIndex:(NSUInteger)indexPath.row];
     cell.summaryText = description;
     cell.summaryLabel.delegate = self;
     cell.summaryLabel.userInteractionEnabled = YES;
@@ -77,19 +83,33 @@
 
 #pragma mark - UITableViewDelegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView
+didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *description = [self.espressos objectAtIndex:(NSUInteger)indexPath.row];
+    DetailViewController *viewController = [[DetailViewController alloc] initWithEspressoDescription:description];
+    [self.navigationController pushViewController:viewController animated:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - TTTAttributedLabelDelegate
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+- (void)attributedLabel:(__unused TTTAttributedLabel *)label
+   didSelectLinkWithURL:(NSURL *)url {
     [[[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open Link in Safari", nil), nil] showInView:self.view];
+}
+
+- (void)attributedLabel:(__unused TTTAttributedLabel *)label didLongPressLinkWithURL:(__unused NSURL *)url atPoint:(__unused CGPoint)point {
+    [[[UIAlertView alloc] initWithTitle:@"URL Long Pressed"
+                                message:@"You long-pressed a URL. Well done!"
+                               delegate:nil
+                      cancelButtonTitle:@"Woohoo!"
+                      otherButtonTitles:nil] show];
 }
 
 #pragma mark - UIActionSheetDelegate
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
     }

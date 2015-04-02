@@ -1,4 +1,4 @@
-// AttributedTableViewCell.h
+// DetailViewController.h
 //
 // Copyright (c) 2011 Mattt Thompson (http://mattt.me)
 // 
@@ -22,13 +22,8 @@
 
 #import <UIKit/UIKit.h>
 
-@class TTTAttributedLabel;
+@interface DetailViewController : UIViewController
 
-@interface AttributedTableViewCell : UITableViewCell
-
-@property (nonatomic, strong) NSString *summaryText;
-@property (nonatomic, strong) TTTAttributedLabel *summaryLabel;
-
-+ (CGFloat)heightForCellWithText:(NSString *)text;
+- (id)initWithEspressoDescription:(NSString *)espresso;
 
 @end

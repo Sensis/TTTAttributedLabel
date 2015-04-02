@@ -1,4 +1,4 @@
-// RootViewController.h
+// AppDelegate.m
 //
 // Copyright (c) 2011 Mattt Thompson (http://mattt.me)
 // 
@@ -20,13 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
-#import "TTTAttributedLabel.h"
+#import "AppDelegate.h"
 
-@interface RootViewController : UITableViewController <TTTAttributedLabelDelegate, UIActionSheetDelegate> {
-    NSArray *_espressos;
+#import "RootViewController.h"
+
+@implementation AppDelegate
+
+- (BOOL)application:(__unused UIApplication *)application
+didFinishLaunchingWithOptions:(__unused NSDictionary *)launchOptions
+{
+    RootViewController *viewController = [[RootViewController alloc] init];    
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = self.navigationController;
+    [self.window makeKeyAndVisible];
+
+    return YES;
 }
-
-@property (nonatomic) NSArray *espressos;
 
 @end

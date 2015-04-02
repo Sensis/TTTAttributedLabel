@@ -1,4 +1,4 @@
-// AppDelegate.m
+// AttributedTableViewCell.h
 //
 // Copyright (c) 2011 Mattt Thompson (http://mattt.me)
 // 
@@ -20,25 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AppDelegate.h"
+#import <UIKit/UIKit.h>
 
-#import "RootViewController.h"
+@class TTTAttributedLabel;
 
-@implementation AppDelegate
-@synthesize window = _window;
-@synthesize navigationController = _navigationController;
+@interface AttributedTableViewCell : UITableViewCell
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+@property (nonatomic, copy) NSString *summaryText;
+@property (nonatomic, strong) TTTAttributedLabel *summaryLabel;
 
-    RootViewController *viewController = [[RootViewController alloc] init];    
-    _navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-
-    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];  
-    self.window.backgroundColor = [UIColor whiteColor];
-    self.window.rootViewController = self.navigationController;
-    [self.window makeKeyAndVisible];
-    return YES;
-}
-
++ (CGFloat)heightForCellWithText:(NSString *)text availableWidth:(CGFloat)availableWidth;
 
 @end
