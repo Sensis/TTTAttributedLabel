@@ -1115,7 +1115,8 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 50000
         __unsafe_unretained __typeof(self)weakSelf = self;
 #else
-        __weak __typeof(self)weakSelf = self;
+//        __weak __typeof(self)weakSelf = self;
+		        __unsafe_unretained __typeof(self)weakSelf = self;
 #endif
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             __strong __typeof(weakSelf)strongSelf = weakSelf;
